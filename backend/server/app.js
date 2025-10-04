@@ -52,7 +52,9 @@ app.use(limiter);
 
 // CORS configuration
 app.use(cors({
-  origin: 'https://recruitment-cqgn.onrender.com',
+    origin: (origin, callback) => {
+    callback(null, origin || "*"); // allow whatever origin comes
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -72,8 +74,8 @@ app.get('/health', (req, res) => {
 });
 
 // API routes
-app.use('/api/auth', authLimiter, authRoutes);
-app.use('/api/profile', profileRoutes);
+app.use('/auth', authLimiter, authRoutes);
+app.use('/profile', profileRoutes);
 
 // 404 handler
 app.use((req, res, next) => {
@@ -121,7 +123,6 @@ if (missingEnvVars.length > 0) {
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Frontend URL: ${process.env.CLIENT_URL || 'http://localhost:5173'}`);
 });
 
 export default app;
