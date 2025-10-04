@@ -147,7 +147,7 @@ export const ProfilePage: React.FC = () => {
         return;
       }
 
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch('https://recruitment-backend-2le0.onrender.com/profile', {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -252,7 +252,7 @@ export const ProfilePage: React.FC = () => {
         education: educationPayload
       };
 
-      const response = await fetch('http://localhost:5000/api/profile', {
+      const response = await fetch('https://recruitment-backend-2le0.onrender.com/profile', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
