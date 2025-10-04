@@ -370,341 +370,352 @@ export const ProfilePage: React.FC = () => {
     );
   }
 
-  return (
+    return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-          <div>
-            <h1 className="text-4xl font-extrabold text-indigo-900 drop-shadow mb-1">My Profile</h1>
-            <p className="text-indigo-500 mt-1 text-lg">Manage your professional information</p>
+        <header className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
+          <div className="max-w-7xl mx-auto flex items-center justify-between px-4 py-2 md:py-3">
+            {/* Title */}
+            <div>
+              <h1 className="text-lg md:text-xl font-bold text-gray-800">My Profile</h1>
+              <p className="text-sm text-blue-600">Manage your professional information</p>
+            </div>
+
+            {/* Logout Button */}
+            <button className="bg-red-100 text-red-600 px-3 py-1 md:px-4 md:py-2 rounded-md hover:bg-red-200 transition">
+              Logout
+            </button>
           </div>
-            <Button
-            onClick={signOut}
-            variant="outline"
-            className="text-red-600 border-red-200 hover:bg-red-50 shadow-md ml-auto md:ml-0"
-            >
-            Logout
-            </Button>
-        </div>
+        </header>
         {error && (
           <div className="mb-6 p-4 bg-red-100 border border-red-300 rounded-lg shadow">
             <p className="text-red-700 font-semibold">{error}</p>
           </div>
         )}
-
-        <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-          {/* Profile Summary Card */}
+        {/* Add padding-top to main content to avoid overlap */}
+        <main className="pt-20">
+          {/* Your page content here */}
+       
+          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
+            {/* Profile Summary Card */}
             <div className="xl:col-span-1">
-            <div className="md:sticky md:top-8">
-              <Card className="p-8 text-center bg-gradient-to-br from-indigo-100 to-blue-50 shadow-lg rounded-2xl">
-              <div className="w-28 h-28 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg border-4 border-white">
-                <User className="w-14 h-14 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold text-indigo-900 mb-2">
-                {profile?.firstName && profile?.lastName
-                ? `${profile.firstName} ${profile.lastName}`
-                : (profile?.fullName || 'Complete Your Profile')
-                }
-              </h2>
-              <p className="text-indigo-600 mb-4 flex items-center justify-center font-medium">
-                <Mail className="w-5 h-5 mr-2" />
-                {user?.email}
-              </p>
-              {profile?.location && (
-                <p className="text-indigo-600 mb-4 flex items-center justify-center font-medium">
-                <MapPin className="w-5 h-5 mr-2" />
-                {profile.location}
-                </p>
-              )}
-              <div className="flex items-center justify-center text-sm text-indigo-400">
-                <Calendar className="w-4 h-4 mr-2" />
-                Member since {profile?.createdAt ? new Date(profile.createdAt).toLocaleDateString() : 'N/A'}
-              </div>
-              </Card>
-            </div>
-            </div>
-
-          {/* Profile Details */}
-          <div className="xl:col-span-2">
-            <Card className="p-8 bg-sky-50 shadow-xl rounded-2xl">
-              <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
-                <h3 className="text-2xl font-bold text-indigo-900">Profile Information</h3>
-                {!isEditing ? (
-                  <Button
-                    onClick={() => setIsEditing(true)}
-                    className="flex items-center bg-gradient-to-r  ml-auto md:ml-0 from-blue-500 to-indigo-600 text-white font-semibold shadow hover:scale-105 transition-transform"
-                  >
-                    <Edit3 className="w-5 h-5 mr-2 md:ml-0" />
-                    Edit Profile
-                  </Button>
-                ) : (
-                  <div className="flex space-x-2">
-                    <Button
-                      onClick={handleSave}
-                      disabled={saving}
-                      className="flex items-center bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow hover:scale-105 transition-transform"
-                    >
-                      <Save className="w-5 h-5 mr-2" />
-                      {saving ? 'Saving...' : 'Save'}
-                    </Button>
-                    <Button
-                      onClick={handleCancel}
-                      variant="outline"
-                      className="flex items-center border-indigo-300 text-indigo-700 font-semibold shadow hover:bg-indigo-50"
-                    >
-                      <X className="w-5 h-5 mr-2" />
-                      Cancel
-                    </Button>
+              <div className="md:sticky md:top-20 md:left-8 md:self-start">
+                <Card className="p-6 text-center bg-gradient-to-br from-indigo-100 to-blue-50 shadow-lg rounded-2xl">
+                  <div className="w-28 h-28 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg border-4 border-white">
+                    <User className="w-14 h-14 text-white" />
                   </div>
-                )}
-              </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Basic Information (left as before) */}
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">First Name</label>
-                  {isEditing ? (
-                    <Input value={editForm.firstName} onChange={(e) => setEditForm({...editForm, firstName: e.target.value})} placeholder="Enter your first name" className="border-indigo-300 focus:ring-indigo-500" />
-                  ) : (
-                    <p className="text-indigo-900 py-2 font-medium">{profile?.firstName || 'Not provided'}</p>
-                  )}
-                </div>
+                  <h2 className="text-2xl font-bold text-indigo-900 mb-2">
+                    {profile?.firstName && profile?.lastName
+                      ? `${profile.firstName} ${profile.lastName}`
+                      : profile?.fullName || 'Complete Your Profile'}
+                  </h2>
 
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Last Name</label>
-                  {isEditing ? (
-                    <Input value={editForm.lastName} onChange={(e) => setEditForm({...editForm, lastName: e.target.value})} placeholder="Enter your last name" className="border-indigo-300 focus:ring-indigo-500" />
-                  ) : (
-                    <p className="text-indigo-900 py-2 font-medium">{profile?.lastName || 'Not provided'}</p>
-                  )}
-                </div>
+                  <p className="text-indigo-600 mb-4 flex items-center justify-center font-medium">
+                    <Mail className="w-5 h-5 mr-2" /> {user?.email}
+                  </p>
 
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Phone Number</label>
-                  {isEditing ? (
-                    <Input value={editForm.phone} onChange={(e) => setEditForm({...editForm, phone: e.target.value})} placeholder="Enter your phone number" />
-                  ) : (
-                    <p className="text-indigo-900 py-2 flex items-center"><Phone className="w-4 h-4 mr-2" />{profile?.phone || 'Not provided'}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Location</label>
-                  {isEditing ? (
-                    <Input value={editForm.location} onChange={(e) => setEditForm({...editForm, location: e.target.value})} placeholder="Enter your location" />
-                  ) : (
-                    <p className="text-indigo-900 py-2 flex items-center"><MapPin className="w-4 h-4 mr-2" />{profile?.location || 'Not provided'}</p>
-                  )}
-                </div>
-
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Bio</label>
-                  {isEditing ? (
-                    <textarea value={editForm.bio} onChange={(e) => setEditForm({...editForm, bio: e.target.value})} placeholder="Tell us about yourself..." rows={3} className="w-full px-3 py-2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
-                  ) : (
-                    <p className="text-indigo-900 py-2 font-medium">{profile?.bio || 'No bio provided'}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Skills</label>
-                  {isEditing ? (
-                    <Input value={editForm.skills} onChange={(e) => setEditForm({...editForm, skills: e.target.value})} placeholder="JavaScript, React, Node.js (comma separated)" />
-                  ) : (
-                    <div className="flex flex-wrap gap-2 py-2">
-                      {profile?.skills?.length ? profile.skills.map((skill, index) => (
-                        <span key={index} className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-indigo-800 rounded-full text-sm font-semibold shadow">{skill}</span>
-                      )) : <p className="text-gray-500">No skills added</p>}
-                    </div>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-indigo-700 mb-2">Experience Level</label>
-                  {isEditing ? (
-                    <select
-                      value={editForm.experience}
-                      onChange={(e) => setEditForm(prev => ({ ...prev, experience: e.target.value }))}
-                      aria-label="Experience level"
-                      className="w-full px-3 py-2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                    >
-                      <option value="entry">Entry Level</option>
-                      <option value="mid">Mid Level</option>
-                      <option value="senior">Senior Level</option>
-                      <option value="lead">Lead/Principal</option>                    
-                    </select>
-                  ) : (
-                   <p className="text-indigo-900 py-2 flex items-center">
-                      <Briefcase className="w-4 h-4 mr-2" />
-                      {profile?.experience
-                        ? profile.experience.charAt(0).toUpperCase() + profile.experience.slice(1) + ' Level'
-                        : 'Not specified'}
+                  {profile?.location && (
+                    <p className="text-indigo-600 mb-4 flex items-center justify-center font-medium">
+                      <MapPin className="w-5 h-5 mr-2" /> {profile.location}
                     </p>
                   )}
-                </div>
 
-                {/* Social Links, Resume, Projects & Education */}
-                <div className="md:col-span-2">
-
-
-                  {/* Projects */}
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between mb-3">
-                      <h5 className="text-lg font-medium text-indigo-900">Projects & Experience</h5>
-                      {isEditing && (
-                        <Button onClick={addProject} className="flex items-center text-sm">
-                          <Plus className="w-4 h-4 mr-2" /> Add
-                        </Button>
-                      )}
-                    </div>
-
-                    {!isEditing ? (
-                      <div className="space-y-3 mb-6">
-                        {profile?.projects && profile.projects.length ? (
-                          profile.projects.map((p, idx) => (
-                            <Card key={idx} className="p-4 bg-gray-50">
-                              <div className="flex items-start justify-between">
-                                <div>
-                                  <h6 className="font-semibold text-indigo-800">{p.title || 'Untitled'}</h6>
-                                  <p className="text-sm text-gray-700 mt-1">{p.description || 'No description provided'}</p>
-                                </div>
-                              </div>
-                            </Card>
-                          ))
-                        ) : (
-                          <p className="text-sm text-gray-500">No projects or experience added</p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="space-y-3 mb-6">
-                        {(editForm.projects as ProjectItem[]).map((p, i) => (
-                          <div key={i} className="p-3 border rounded-lg bg-gray-50">
-                            <div className="flex justify-between items-start mb-2">
-                              <div className="text-sm font-medium text-indigo-800">{`Item ${i + 1}`}</div>
-                              <button type="button" onClick={() => removeProject(i)} className="text-red-600">
-                                <Trash className="w-4 h-4" />
-                              </button>
-                            </div>
-                            <div className="mb-2">
-                              <Input placeholder="Title" value={p.title} onChange={(e) => updateProject(i, 'title', e.target.value)} />
-                            </div>
-                            <div>
-                              <textarea placeholder="Description" value={p.description} onChange={(e) => updateProject(i, 'description', e.target.value)} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
+                  <div className="flex items-center justify-center text-sm text-indigo-400">
+                    <Calendar className="w-4 h-4 mr-2" /> Member since{' '}
+                    {profile?.createdAt
+                      ? new Date(profile.createdAt).toLocaleDateString()
+                      : 'N/A'}
                   </div>
-
-                  {/* Education */}
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between mb-3">
-                      <h5 className="text-lg font-medium text-indigo-900">Education</h5>
-                      {isEditing && (
-                        <Button onClick={addEducation} className="flex items-center text-sm">
-                          <Plus className="w-4 h-4 mr-2" /> Add
-                        </Button>
-                      )}
-                    </div>
-
-                    {!isEditing ? (
-                      <div className="space-y-4">
-                        {profile?.education && profile.education.length ? (
-                          profile.education.map((ed, idx) => (
-                            <Card key={idx} className="p-4 bg-gray-50">
-                              <div>
-                                <div className="flex items-baseline justify-between">
-                                  <h6 className="font-semibold text-indigo-800">{ed.degree ? `${ed.degree} — ${ed.field || ''}` : (ed.field || 'Education')}</h6>
-                                  <span className="text-sm text-gray-500">{ed.start_year || ''}{ed.end_year ? ` — ${ed.end_year}` : ''}</span>
-                                </div>
-                                <p className="text-sm text-gray-700 mt-1">{ed.institution || ''}</p>
-                                {ed.grade && <p className="text-sm text-gray-700 mt-1">Grade: {ed.grade}</p>}
-                                {ed.achievements && ed.achievements.length ? (
-                                  <ul className="mt-2 text-sm text-gray-600 list-disc list-inside">
-                                    {ed.achievements.map((a, i) => <li key={i}>{a}</li>)}
-                                  </ul>
-                                ) : null}
-                              </div>
-                            </Card>
-                          ))
-                        ) : (
-                          <p className="text-sm text-gray-500">No education records added</p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="space-y-3">
-                        {(editForm.education as any[]).map((ed, i) => (
-                          <div key={i} className="p-3 border rounded-lg bg-gray-50">
-                            <div className="flex justify-between items-start mb-2">
-                              <div className="text-sm font-medium text-indigo-800">{`Education ${i + 1}`}</div>
-                              <button type="button" onClick={() => removeEducation(i)} className="text-red-600">
-                                <Trash className="w-4 h-4" />
-                              </button>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
-                              <Input placeholder="Degree (e.g. M.Tech)" value={ed.degree} onChange={(e) => updateEducation(i, 'degree', e.target.value)} />
-                              <Input placeholder="Field (e.g. Computer Science)" value={ed.field} onChange={(e) => updateEducation(i, 'field', e.target.value)} />
-                              <Input placeholder="Institution (e.g. NIT Surathkal)" value={ed.institution} onChange={(e) => updateEducation(i, 'institution', e.target.value)} />
-                              <Input placeholder="Start year (e.g. 2022)" value={ed.start_year} onChange={(e) => updateEducation(i, 'start_year', e.target.value)} />
-                              <Input placeholder="End year (e.g. 2024)" value={ed.end_year} onChange={(e) => updateEducation(i, 'end_year', e.target.value)} />
-                              <Input placeholder="Grade (e.g. 8.5 CGPA)" value={ed.grade} onChange={(e) => updateEducation(i, 'grade', e.target.value)} />
-                            </div>
-
-                            <div>
-                              <label className="block text-sm text-gray-700 mb-1">Achievements (comma separated)</label>
-                              <Input placeholder="Teaching Assistant, Core Team Member" value={ed.achievements} onChange={(e) => updateEducation(i, 'achievements', e.target.value)} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                {/* {social} */}
-                  <h4 className="text-xl font-bold text-indigo-900 m-4">Social & Resume</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 mt-6">
-                    <div>
-                      <label className="block text-sm font-semibold text-indigo-700 mb-2">LinkedIn</label>
-                      {isEditing ? (
-                        <Input value={editForm.linkedIn} onChange={(e) => setEditForm({...editForm, linkedIn: e.target.value})} placeholder="LinkedIn profile URL" />
-                      ) : (
-                        <p className="text-indigo-900 py-2">{profile?.linkedIn ? <a href={profile.linkedIn} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Profile</a> : 'Not provided'}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-indigo-700 mb-2">GitHub</label>
-                      {isEditing ? (
-                        <Input value={editForm.github} onChange={(e) => setEditForm({...editForm, github: e.target.value})} placeholder="GitHub profile URL" />
-                      ) : (
-                        <p className="text-indigo-900 py-2">{profile?.github ? <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Profile</a> : 'Not provided'}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-indigo-700 mb-2">Portfolio</label>
-                      {isEditing ? (
-                        <Input value={editForm.portfolio} onChange={(e) => setEditForm({...editForm, portfolio: e.target.value})} placeholder="Portfolio website URL" />
-                      ) : (
-                        <p className="text-indigo-900 py-2">{profile?.portfolio ? <a href={profile.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Portfolio</a> : 'Not provided'}</p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-indigo-700 mb-2">Resume</label>
-                      {isEditing ? (
-                        <Input value={editForm.resume} onChange={(e) => setEditForm({...editForm, resume: e.target.value})} placeholder="Resume URL" />
-                      ) : (
-                        <p className="text-indigo-900 py-2">{profile?.resume ? <a href={profile.resume} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Resume</a> : 'Not provided'}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
+                </Card>
               </div>
-            </Card>
+            </div>
+
+
+
+
+            {/* Profile Details */}
+            <div className="xl:col-span-2 gap-4">
+              <Card className="p-8 bg-sky-50 shadow-xl rounded-2xl">
+                <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+                  <h3 className="text-2xl font-bold text-indigo-900">Profile Information</h3>
+                  {!isEditing ? (
+                    <Button
+                      onClick={() => setIsEditing(true)}
+                      className="flex items-center bg-gradient-to-r  ml-auto md:ml-0 from-blue-500 to-indigo-600 text-white font-semibold shadow hover:scale-105 transition-transform"
+                    >
+                      <Edit3 className="w-5 h-5 mr-2 md:ml-0" />
+                      Edit Profile
+                    </Button>
+                  ) : (
+                    <div className="flex space-x-2">
+                      <Button
+                        onClick={handleSave}
+                        disabled={saving}
+                        className="flex items-center bg-gradient-to-r from-green-400 to-blue-500 text-white font-semibold shadow hover:scale-105 transition-transform"
+                      >
+                        <Save className="w-5 h-5 mr-2" />
+                        {saving ? 'Saving...' : 'Save'}
+                      </Button>
+                      <Button
+                        onClick={handleCancel}
+                        variant="outline"
+                        className="flex items-center border-indigo-300 text-indigo-700 font-semibold shadow hover:bg-indigo-50"
+                      >
+                        <X className="w-5 h-5 mr-2" />
+                        Cancel
+                      </Button>
+                    </div>
+                  )}
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Basic Information (left as before) */}
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">First Name</label>
+                    {isEditing ? (
+                      <Input value={editForm.firstName} onChange={(e) => setEditForm({...editForm, firstName: e.target.value})} placeholder="Enter your first name" className="border-indigo-300 focus:ring-indigo-500" />
+                    ) : (
+                      <p className="text-indigo-900 py-2 font-medium">{profile?.firstName || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Last Name</label>
+                    {isEditing ? (
+                      <Input value={editForm.lastName} onChange={(e) => setEditForm({...editForm, lastName: e.target.value})} placeholder="Enter your last name" className="border-indigo-300 focus:ring-indigo-500" />
+                    ) : (
+                      <p className="text-indigo-900 py-2 font-medium">{profile?.lastName || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Phone Number</label>
+                    {isEditing ? (
+                      <Input value={editForm.phone} onChange={(e) => setEditForm({...editForm, phone: e.target.value})} placeholder="Enter your phone number" />
+                    ) : (
+                      <p className="text-indigo-900 py-2 flex items-center"><Phone className="w-4 h-4 mr-2" />{profile?.phone || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Location</label>
+                    {isEditing ? (
+                      <Input value={editForm.location} onChange={(e) => setEditForm({...editForm, location: e.target.value})} placeholder="Enter your location" />
+                    ) : (
+                      <p className="text-indigo-900 py-2 flex items-center"><MapPin className="w-4 h-4 mr-2" />{profile?.location || 'Not provided'}</p>
+                    )}
+                  </div>
+
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Bio</label>
+                    {isEditing ? (
+                      <textarea value={editForm.bio} onChange={(e) => setEditForm({...editForm, bio: e.target.value})} placeholder="Tell us about yourself..." rows={3} className="w-full px-3 py-2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" />
+                    ) : (
+                      <p className="text-indigo-900 py-2 font-medium">{profile?.bio || 'No bio provided'}</p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Skills</label>
+                    {isEditing ? (
+                      <Input value={editForm.skills} onChange={(e) => setEditForm({...editForm, skills: e.target.value})} placeholder="JavaScript, React, Node.js (comma separated)" />
+                    ) : (
+                      <div className="flex flex-wrap gap-2 py-2">
+                        {profile?.skills?.length ? profile.skills.map((skill, index) => (
+                          <span key={index} className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-indigo-800 rounded-full text-sm font-semibold shadow">{skill}</span>
+                        )) : <p className="text-gray-500">No skills added</p>}
+                      </div>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-semibold text-indigo-700 mb-2">Experience Level</label>
+                    {isEditing ? (
+                      <select
+                        value={editForm.experience}
+                        onChange={(e) => setEditForm(prev => ({ ...prev, experience: e.target.value }))}
+                        aria-label="Experience level"
+                        className="w-full px-3 py-2 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      >
+                        <option value="entry">Entry Level</option>
+                        <option value="mid">Mid Level</option>
+                        <option value="senior">Senior Level</option>
+                        <option value="lead">Lead/Principal</option>                    
+                      </select>
+                    ) : (
+                    <p className="text-indigo-900 py-2 flex items-center">
+                        <Briefcase className="w-4 h-4 mr-2" />
+                        {profile?.experience
+                          ? profile.experience.charAt(0).toUpperCase() + profile.experience.slice(1) + ' Level'
+                          : 'Not specified'}
+                      </p>
+                    )}
+                  </div>
+
+                  {/* Social Links, Resume, Projects & Education */}
+                  <div className="md:col-span-2">
+
+
+                    {/* Projects */}
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between mb-3">
+                        <h5 className="text-lg font-medium text-indigo-900">Projects & Experience</h5>
+                        {isEditing && (
+                          <Button onClick={addProject} className="flex items-center text-sm">
+                            <Plus className="w-4 h-4 mr-2" /> Add
+                          </Button>
+                        )}
+                      </div>
+
+                      {!isEditing ? (
+                        <div className="space-y-3 mb-6">
+                          {profile?.projects && profile.projects.length ? (
+                            profile.projects.map((p, idx) => (
+                              <Card key={idx} className="p-4 bg-gray-50">
+                                <div className="flex items-start justify-between">
+                                  <div>
+                                    <h6 className="font-semibold text-indigo-800">{p.title || 'Untitled'}</h6>
+                                    <p className="text-sm text-gray-700 mt-1">{p.description || 'No description provided'}</p>
+                                  </div>
+                                </div>
+                              </Card>
+                            ))
+                          ) : (
+                            <p className="text-sm text-gray-500">No projects or experience added</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-3 mb-6">
+                          {(editForm.projects as ProjectItem[]).map((p, i) => (
+                            <div key={i} className="p-3 border rounded-lg bg-gray-50">
+                              <div className="flex justify-between items-start mb-2">
+                                <div className="text-sm font-medium text-indigo-800">{`Item ${i + 1}`}</div>
+                                <button type="button" onClick={() => removeProject(i)} className="text-red-600">
+                                  <Trash className="w-4 h-4" />
+                                </button>
+                              </div>
+                              <div className="mb-2">
+                                <Input placeholder="Title" value={p.title} onChange={(e) => updateProject(i, 'title', e.target.value)} />
+                              </div>
+                              <div>
+                                <textarea placeholder="Description" value={p.description} onChange={(e) => updateProject(i, 'description', e.target.value)} rows={3} className="w-full px-3 py-2 border border-gray-300 rounded-lg" />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Education */}
+                    <div className="mt-2">
+                      <div className="flex items-center justify-between mb-3">
+                        <h5 className="text-lg font-medium text-indigo-900">Education</h5>
+                        {isEditing && (
+                          <Button onClick={addEducation} className="flex items-center text-sm">
+                            <Plus className="w-4 h-4 mr-2" /> Add
+                          </Button>
+                        )}
+                      </div>
+
+                      {!isEditing ? (
+                        <div className="space-y-4">
+                          {profile?.education && profile.education.length ? (
+                            profile.education.map((ed, idx) => (
+                              <Card key={idx} className="p-4 bg-gray-50">
+                                <div>
+                                  <div className="flex items-baseline justify-between">
+                                    <h6 className="font-semibold text-indigo-800">{ed.degree ? `${ed.degree} — ${ed.field || ''}` : (ed.field || 'Education')}</h6>
+                                    <span className="text-sm text-gray-500">{ed.start_year || ''}{ed.end_year ? ` — ${ed.end_year}` : ''}</span>
+                                  </div>
+                                  <p className="text-sm text-gray-700 mt-1">{ed.institution || ''}</p>
+                                  {ed.grade && <p className="text-sm text-gray-700 mt-1">Grade: {ed.grade}</p>}
+                                  {ed.achievements && ed.achievements.length ? (
+                                    <ul className="mt-2 text-sm text-gray-600 list-disc list-inside">
+                                      {ed.achievements.map((a, i) => <li key={i}>{a}</li>)}
+                                    </ul>
+                                  ) : null}
+                                </div>
+                              </Card>
+                            ))
+                          ) : (
+                            <p className="text-sm text-gray-500">No education records added</p>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          {(editForm.education as any[]).map((ed, i) => (
+                            <div key={i} className="p-3 border rounded-lg bg-gray-50">
+                              <div className="flex justify-between items-start mb-2">
+                                <div className="text-sm font-medium text-indigo-800">{`Education ${i + 1}`}</div>
+                                <button type="button" onClick={() => removeEducation(i)} className="text-red-600">
+                                  <Trash className="w-4 h-4" />
+                                </button>
+                              </div>
+
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 mb-2">
+                                <Input placeholder="Degree (e.g. M.Tech)" value={ed.degree} onChange={(e) => updateEducation(i, 'degree', e.target.value)} />
+                                <Input placeholder="Field (e.g. Computer Science)" value={ed.field} onChange={(e) => updateEducation(i, 'field', e.target.value)} />
+                                <Input placeholder="Institution (e.g. NIT Surathkal)" value={ed.institution} onChange={(e) => updateEducation(i, 'institution', e.target.value)} />
+                                <Input placeholder="Start year (e.g. 2022)" value={ed.start_year} onChange={(e) => updateEducation(i, 'start_year', e.target.value)} />
+                                <Input placeholder="End year (e.g. 2024)" value={ed.end_year} onChange={(e) => updateEducation(i, 'end_year', e.target.value)} />
+                                <Input placeholder="Grade (e.g. 8.5 CGPA)" value={ed.grade} onChange={(e) => updateEducation(i, 'grade', e.target.value)} />
+                              </div>
+
+                              <div>
+                                <label className="block text-sm text-gray-700 mb-1">Achievements (comma separated)</label>
+                                <Input placeholder="Teaching Assistant, Core Team Member" value={ed.achievements} onChange={(e) => updateEducation(i, 'achievements', e.target.value)} />
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  {/* {social} */}
+                    <h4 className="text-xl font-bold text-indigo-900 m-4">Social & Resume</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-6 mt-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo-700 mb-2">LinkedIn</label>
+                        {isEditing ? (
+                          <Input value={editForm.linkedIn} onChange={(e) => setEditForm({...editForm, linkedIn: e.target.value})} placeholder="LinkedIn profile URL" />
+                        ) : (
+                          <p className="text-indigo-900 py-2">{profile?.linkedIn ? <a href={profile.linkedIn} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Profile</a> : 'Not provided'}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo-700 mb-2">GitHub</label>
+                        {isEditing ? (
+                          <Input value={editForm.github} onChange={(e) => setEditForm({...editForm, github: e.target.value})} placeholder="GitHub profile URL" />
+                        ) : (
+                          <p className="text-indigo-900 py-2">{profile?.github ? <a href={profile.github} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Profile</a> : 'Not provided'}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo-700 mb-2">Portfolio</label>
+                        {isEditing ? (
+                          <Input value={editForm.portfolio} onChange={(e) => setEditForm({...editForm, portfolio: e.target.value})} placeholder="Portfolio website URL" />
+                        ) : (
+                          <p className="text-indigo-900 py-2">{profile?.portfolio ? <a href={profile.portfolio} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Portfolio</a> : 'Not provided'}</p>
+                        )}
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-indigo-700 mb-2">Resume</label>
+                        {isEditing ? (
+                          <Input value={editForm.resume} onChange={(e) => setEditForm({...editForm, resume: e.target.value})} placeholder="Resume URL" />
+                        ) : (
+                          <p className="text-indigo-900 py-2">{profile?.resume ? <a href={profile.resume} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">View Resume</a> : 'Not provided'}</p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
+            </div>
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );
